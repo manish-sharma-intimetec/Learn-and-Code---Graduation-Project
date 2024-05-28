@@ -2,7 +2,7 @@ import threading
 import time
 userInput = 0
 
-def printMessage(message: str):
+def printMessage(message: str) -> None:
     while userInput == 0:
         print(f"The message given by the system: {message}", end="\n")
         time.sleep(2)
