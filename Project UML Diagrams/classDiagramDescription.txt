@@ -1,0 +1,7 @@
+Relationships:
+
+Chef receives many Notifications and recommends many Meals. The Chef also views many Ratings.
+
+Employee receives many Notifications, votes on one Meal, and provides many Ratings.
+
+Admin manages many Meals and sends many Notifications.
