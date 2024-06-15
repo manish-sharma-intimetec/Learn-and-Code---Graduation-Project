@@ -12,7 +12,7 @@ class MySQLConnection:
                 print("Connection to MySQL is created successfully.")        
         except Exception:
             print(f"Some Exception occured while connecting to MySQL and the exception is : {Exception}")
-        return self.connection
+            raise Exception
     
     def closeConnection(self):
         if self.connection != None and self.connection.is_connected() == True:
@@ -22,6 +22,7 @@ class MySQLConnection:
             print("There is no connection with MySQL.")
 
 
-mysqlConnection = MySQLConnection()
-mysqlConnection.makeConnection()
-mysqlConnection.closeConnection()
+if __name__ == "__main__":
+    mysqlConnection = MySQLConnection()
+    mysqlConnection.makeConnection()
+    mysqlConnection.closeConnection()
