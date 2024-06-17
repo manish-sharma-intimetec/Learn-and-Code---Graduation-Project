@@ -1,11 +1,14 @@
 import socket
+import time
 
 if __name__ == "__main__":
     HOST = "127.0.0.1"
-    PORT = 9090
+    PORT = 5000
 
-    socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    socket.connect((HOST, PORT))
-    socket.send("Jai Shree Ram!!".encode("UTF-8"))
+    for i in range(10):
+        soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        soc.connect((HOST, PORT))
+        soc.send(f"client: {i + 1}".encode("UTF-8"))
+        time.sleep(1.5)
     
     

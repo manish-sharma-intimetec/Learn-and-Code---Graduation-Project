@@ -1,9 +1,9 @@
 import socket
+import threading
 
 def createSocket(host, port):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((host, port))
-
     return server
 
 
@@ -14,9 +14,9 @@ def printClientData(connectionSocket):
 
 
 def acceptConnectionRequests(server):
-    while True:
-        connectionSocket, clientAddress = server.accept()
-        printClientData(connectionSocket)
+    connectionSocket, clientAddress = server.accept()
+    print(connectionSocket)
+
 
 
 if __name__ == "__main__":
