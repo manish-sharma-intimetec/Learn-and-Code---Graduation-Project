@@ -1,10 +1,9 @@
-from User import User
+from .User import User
 from DatabaseOperations.MySQLOperations import MySQLOperations
 
 class Admin(User):
-    def __init__(self, userName, password, role) -> None:
+    def __init__(self, userName, password, role = 'Admin') -> None:
         super().__init__(userName, password, role)
-        self.loggedIn = False
 
     def addMeal(self, values):
         if self.loggedIn == True:
