@@ -1,7 +1,9 @@
 import threading
 import socket
 from ProtocolDataUnit import ProtocolDataUnit
-import json
+import sys
+sys.path.append("..")
+from Login.Admin import Admin
 import ast
 import queue
 
@@ -26,6 +28,22 @@ class Server:
             isValid = False
         
         return isValid
+    
+
+    def loginRequest(self, PDU):
+        user = None
+        print('loginRequest is called.')
+        print(PDU['payload'])
+        if PDU['userType'] == 1:
+            user = Admin(PDU['payload'][0], PDU['payload'][1])
+            user.login()
+
+    def processRequest(self, PDU):
+        print("processRequest is called.")
+        if PDU['loginRequest'] == True:
+            self.loginRequest(PDU)
+            
+
 
     def sendResponse(self, connection, clientData: dict, responseMessage: str):
         if self.isPDUValid(clientData) == True:
@@ -45,7 +63,10 @@ class Server:
         # print(data)
         PDU = self.convertProtocolDataUnitIntoDictionary(data)
         print(PDU)
-        self.sendResponse(connection, PDU, "Got it.")
+
+        # self.sendResponse(connection, PDU, "Got your Request.")
+        self.processRequest(PDU)
+        # self.sendResponse(connection, PDU, "Got your Request.")
         # connection.send("Hello".encode('utf-8'))
         return data
     

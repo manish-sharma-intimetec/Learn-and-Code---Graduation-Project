@@ -3,5 +3,7 @@ class ProtocolDataUnit:
         self.PDU = {
     "payload": None,
     "status": None,
+    "loginRequest": False,
+    "userType": None,
     "time": None
 }
