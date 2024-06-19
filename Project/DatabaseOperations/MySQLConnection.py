@@ -1,5 +1,6 @@
 import mysql.connector
-from DatabaseConfig import config
+from .DatabaseConfig import config
+
 
 class MySQLConnection:
     def __init__(self) -> None:

@@ -1,4 +1,4 @@
-from MySQLConnection import MySQLConnection
+from .MySQLConnection import MySQLConnection
 
 class DatabaseConnection(MySQLConnection):
     def __init__(self) -> None:
