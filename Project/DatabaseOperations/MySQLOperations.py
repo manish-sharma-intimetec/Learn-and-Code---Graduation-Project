@@ -3,6 +3,38 @@ from .DatabaseConnection import DatabaseConnection
 class MySQLOperations:
     def __init__(self) -> None:
         self.databaseConnection = DatabaseConnection()
+    
+
+    def selectUserFromLoginStatus(self, values):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+        sql = "SELECT * FROM user_status WHERE userName = %s"
+        cursor.execute(sql, values)
+        result = cursor.fetchall()
+
+        cursor.close()
+        self.databaseConnection.closeConnection()
+        return result
+
+    def updateLoginStatus(self, values = ('Manish', True)):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+        # delete previous entry if it is exist
+        
+        sql = "DELETE FROM user_status WHERE userName = %s"
+        cursor.execute(sql, (values[0], ))
+        print("record is updating.")
+
+        # insert new entry
+        sql = "INSERT INTO user_status (userName, loginStatus) VALUES (%s, %s)"
+        cursor.execute(sql, values)
+        connection.commit()
+        print("Record updated successfully in user_status table.")
+
+        cursor.close()
+        self.databaseConnection.closeConnection()
 
     def insertUser(self, values = ('Manish', '123', 'Big Data Engineer')):
         connection = self.databaseConnection.makeConnection()
