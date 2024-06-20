@@ -5,6 +5,7 @@ from ProtocolDataUnit import ProtocolDataUnit
 import sys
 sys.path.append("..")
 from Login.Admin import Admin
+from Login.Chef import Chef
 
 
 
@@ -23,7 +24,7 @@ def createUserObject(userType, credentials):
     if userType == 1:
         user = Admin(credentials[0], credentials[1], 'Admin')
     elif userType == 2:
-        pass
+        user = Chef(credentials[0], credentials[1], 'Chef')
     elif userType == 3:
         pass
 
@@ -49,6 +50,7 @@ if __name__ == "__main__":
     if user.isUserLoggedIn():
         user.mainMenu()
 
+    # user.mainMenu()
     
 
     # pdu = ProtocolDataUnit()

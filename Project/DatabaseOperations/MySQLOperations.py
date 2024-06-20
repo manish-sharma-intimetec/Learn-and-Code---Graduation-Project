@@ -116,12 +116,27 @@ class MySQLOperations:
         cursor.close()
         self.databaseConnection.closeConnection()
 
+    def showAllItems(self):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+        sql = "SELECT * FROM Menu_Item"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        print("Fetched all records from Menu_Item.")
+
+        cursor.close()
+        self.databaseConnection.closeConnection()
+        return result
+
 
 
 
 if __name__ == "__main__":
     # MySQLOperations().insertUser()
     # MySQLOperations().selectUser('Manish', '123')
-    MySQLOperations.insertFoodItem('#1', 'Idli', 200, True)
+    # MySQLOperations.insertFoodItem('#1', 'Idli', 200, True)
+    MySQLOperations().showAllItems()
+
 
 

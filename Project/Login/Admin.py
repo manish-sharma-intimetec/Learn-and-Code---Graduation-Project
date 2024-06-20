@@ -62,4 +62,4 @@ class Admin(User):
 if __name__ == "__main__":
     obj = Admin('Manish', 'ps', 'Data Engineer')
     obj.addMeal(('#3', 'sabji', 200, True))
-    obj.removeMeal('#2')
+    # obj.removeMeal('#2')

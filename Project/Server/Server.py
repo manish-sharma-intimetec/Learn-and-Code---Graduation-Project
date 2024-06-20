@@ -58,7 +58,13 @@ class Server:
         userName = PDU['payload'][0]
         MySQLOperations().updateLoginStatus((userName, False))
         print("User Logout successfully.")
-            
+
+    #show Menu
+    def showMenu(self, connection):
+        # print("called..............")
+        result = MySQLOperations.showAllItems()
+        connection.sendall(f"{result}".encode('UTF-8'))
+
 
     # handle request of clients
     def processRequest(self, connection, PDU):
@@ -67,6 +73,8 @@ class Server:
             self.loginRequest(connection, PDU)
         if PDU['requestType'] == 'logout':
             self.logoutRequest(PDU)
+        if PDU['requestType'] == 'showMenu':
+            self.showMenu(connection)
             
 
 
