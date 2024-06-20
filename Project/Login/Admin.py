@@ -16,13 +16,25 @@ class Admin(User):
         adminChoice = int(input())
         
         if adminChoice == 1:
-            self.addMeal()
+            itemID = input("Enter itemID: ")
+            itemName = input("Enter itemName: ")
+            price = int(input("Enter price: "))
+            availability = int(input("Enter availability: "))
+            values = (itemID, itemName, price, availability)
+            self.addMeal(values)
         if adminChoice == 2:
-            self.removeMeal()
+            itemID = input("Enter itemID: ")
+            self.removeMeal(itemID)
         if adminChoice == 3:
-            self.updatePrice()
+            itemID = input("Enter itemID: ")
+            newPrice = int(input("Enter new price: "))
+            values = (itemID, newPrice)
+            self.updatePrice(values)
         if adminChoice == 4:
-            self.updateAvailability()
+            itemID = input("Enter itemID: ")
+            newAvailability = int(input("Enter new price: "))
+            values = itemID, newAvailability
+            self.updateAvailability(values)
         if adminChoice == 4:
             self.logout()
 
