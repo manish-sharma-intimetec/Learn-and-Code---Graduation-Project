@@ -39,5 +39,3 @@ def receiveRequests():
 
 if __name__ == "__main__":
     receiveRequests()
-
-
