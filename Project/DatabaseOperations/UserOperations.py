@@ -1,6 +1,6 @@
 from .DatabaseConnection import DatabaseConnection
 
-class MySQLOperations:
+class UserOperations:
     def __init__(self) -> None:
         self.databaseConnection = DatabaseConnection()
     
@@ -136,7 +136,8 @@ if __name__ == "__main__":
     # MySQLOperations().insertUser()
     # MySQLOperations().selectUser('Manish', '123')
     # MySQLOperations.insertFoodItem('#1', 'Idli', 200, True)
-    MySQLOperations().showAllItems()
+    # MySQLOperations().showAllItems()
+    pass
 
 
 

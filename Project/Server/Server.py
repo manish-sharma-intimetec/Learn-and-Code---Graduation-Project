@@ -90,16 +90,12 @@ class Server:
         server.bind((HOST, PORT))
         return server
     
-    def listenClient(self, server: socket.socket) -> str:
-        connection, clientAddress = server.accept()  
-        
-        
+    def listenClient(self, connection) -> str:   
         try:
             while True:
                 data = connection.recv(1024).decode("UTF-8")
-                # print(data)
+                print(data)
                 PDU = self.convertProtocolDataUnitIntoDictionary(data)
-                print(PDU)
 
                 if not PDU:
                     break
@@ -118,12 +114,13 @@ class Server:
         server.listen()
         
         while True:
-            thread = threading.Thread(target=self.listenClient, args=(server, ))
+            connection, clientAddress = server.accept()
+            thread = threading.Thread(target=self.listenClient, args=(connection, ))
             thread.start()
 
 
 if __name__ == "__main__":
     print(type(socket.socket(socket.AF_INET, socket.SOCK_STREAM)))
-    server = Server("127.0.0.1", 5000)
+    server = Server("localhost", 5000)
     server.listenMultipleClients()
 

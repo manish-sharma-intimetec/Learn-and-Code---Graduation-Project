@@ -3,9 +3,9 @@ import time
 from ProtocolDataUnit import ProtocolDataUnit
 
 import sys
-sys.path.append("..")
-from Login.Admin import Admin
-from Login.Chef import Chef
+# sys.path.append("..")
+# from Login.Admin import Admin
+# from Login.Chef import Chef
 
 
 
@@ -40,15 +40,26 @@ if __name__ == "__main__":
     soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     soc.connect((HOST, PORT))
 
-    userType = getUserType()
-    credentials = askForUserCredentials()
-    user = createUserObject(userType, credentials)
-    user.login(soc)
+
+
+    pdu = ProtocolDataUnit()
+    pdu.PDU["userName"] = "Mukesh"
+    pdu.PDU["userPassword"] = "123"
+    pdu.PDU["userRole"] = "Admin"
+    pdu.PDU["requestedFor"] = "login"
+
+    soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
+    message = soc.recv(1024).decode("UTF-8")
+    print(message)
+    # userType = getUserType()
+    # credentials = askForUserCredentials()
+    # user = createUserObject(userType, credentials)
+    # user.login(soc)
     
     
 
-    if user.isUserLoggedIn():
-        user.mainMenu()
+    # if user.isUserLoggedIn():
+    #     user.mainMenu()
 
     # user.mainMenu()
     
