@@ -27,12 +27,17 @@ class Server:
             if user.login() == True:
 
                 #adding the user with key value pair if he/she successfully loggedIn
-                self.listOfUsersLoggedIn[user.userName] = user
+                self.listOfUsersLoggedIn[connection] = user
                 print("User login successfully.")
                 connection.sendall("You login successfully.".encode("UTF-8"))
+                print(self.listOfUsersLoggedIn)
             else:
                 print("Incorrect credentials.")
 
+        if(receivedDataDict["requestedFor"] == "logout"):
+            self.listOfUsersLoggedIn.pop(connection)
+            connection.sendall("You logout successfully.".encode("UTF-8"))
+            connection.close()
 
 
     def listenClient(self, connection) -> str:   
@@ -50,6 +55,8 @@ class Server:
             print("Connection is lost.")
 
         finally:
+            self.listOfUsersLoggedIn.pop(connection, "User is already logout.") # logout
+            print("User is logout due to connection lost.")
             print("Connection is closed.")
             connection.close()
 

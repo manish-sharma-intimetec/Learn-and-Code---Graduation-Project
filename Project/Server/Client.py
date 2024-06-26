@@ -51,6 +51,20 @@ if __name__ == "__main__":
     soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
     message = soc.recv(1024).decode("UTF-8")
     print(message)
+
+
+
+
+
+    pdu = ProtocolDataUnit()
+    pdu.PDU["userName"] = "Mukesh"
+    pdu.PDU["userPassword"] = "123"
+    pdu.PDU["userRole"] = "Admin"
+    pdu.PDU["requestedFor"] = "logout"
+
+    soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
+    message = soc.recv(1024).decode("UTF-8")
+    print(message)
     # userType = getUserType()
     # credentials = askForUserCredentials()
     # user = createUserObject(userType, credentials)
