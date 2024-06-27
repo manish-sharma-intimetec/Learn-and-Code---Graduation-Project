@@ -1,7 +1,7 @@
 import socket
 import time
 from ProtocolDataUnit import ProtocolDataUnit
-
+import json
 import sys
 # sys.path.append("..")
 # from Login.Admin import Admin
@@ -54,17 +54,27 @@ if __name__ == "__main__":
 
 
 
-
+    
+    payload = {"itemID": "#100", 
+               "itemName": "Kachori",
+               "price": 100,
+               "availability": 1}
+    
+    payload = json.dumps(payload)
+    print(payload)
 
     pdu = ProtocolDataUnit()
     pdu.PDU["userName"] = "Mukesh"
     pdu.PDU["userPassword"] = "123"
     pdu.PDU["userRole"] = "Admin"
-    pdu.PDU["requestedFor"] = "logout"
+    pdu.PDU["requestedFor"] = "insertFoodItem"
+    pdu.PDU["payload"] = payload
 
     soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
+    
     message = soc.recv(1024).decode("UTF-8")
     print(message)
+
     # userType = getUserType()
     # credentials = askForUserCredentials()
     # user = createUserObject(userType, credentials)

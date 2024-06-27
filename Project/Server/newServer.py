@@ -1,8 +1,14 @@
+import sys
+sys.path.append("..")
+
 import threading
 import socket
 import ast
 from ProtocolDataUnit import ProtocolDataUnit
-from User import User
+from Login.User import User
+from DatabaseOperations.AdminOperations import AdminOperations
+
+
 
 class Server:
     def __init__(self, HOST: str, PORT: int) -> None:
@@ -22,15 +28,15 @@ class Server:
 
     def processRequest(self, connection, receivedDataDict):
         print("Processing Request....")
+        user = User(receivedDataDict["userName"], receivedDataDict["userPassword"], receivedDataDict["userRole"])
+
         if(receivedDataDict["requestedFor"] == "login"):
-            user = User(receivedDataDict["userName"], receivedDataDict["userPassword"], receivedDataDict["userRole"])
             if user.login() == True:
 
                 #adding the user with key value pair if he/she successfully loggedIn
                 self.listOfUsersLoggedIn[connection] = user
                 print("User login successfully.")
                 connection.sendall("You login successfully.".encode("UTF-8"))
-                print(self.listOfUsersLoggedIn)
             else:
                 print("Incorrect credentials.")
 
@@ -38,6 +44,30 @@ class Server:
             self.listOfUsersLoggedIn.pop(connection)
             connection.sendall("You logout successfully.".encode("UTF-8"))
             connection.close()
+
+        # Admin Requests
+        if(receivedDataDict["requestedFor"] == "showAllItems"):
+            adminOperations = AdminOperations()
+            result = adminOperations.showAllItems()
+            connection.send(f"{result}".encode("UTF-8"))
+
+
+        if(receivedDataDict["requestedFor"] == "insertFoodItem"):
+            payload = receivedDataDict["payload"]
+            payloadDict = self.convertReceivedDataIntoDictionary(payload)
+            
+
+            itemID = payloadDict["itemID"]
+            itemName = payloadDict["itemName"]
+            price = payloadDict["price"]
+            availability = payloadDict["availability"]
+
+            adminOperations = AdminOperations()
+            adminOperations.insertFoodItem((itemID, itemName, price, availability))
+            connection.send(f"Item inserted successfully.".encode("UTF-8"))
+            
+            
+
 
 
     def listenClient(self, connection) -> str:   

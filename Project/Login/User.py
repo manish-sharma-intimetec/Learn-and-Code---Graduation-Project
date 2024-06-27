@@ -5,9 +5,8 @@ from ProtocolDataUnit import ProtocolDataUnit
 
 # added_path = os.path.abspath("..")
 # print(f"Added Path: {added_path}")
+from DatabaseOperations.UserOperations import UserOperations
 
-
-from DatabaseOperations.MySQLOperations import MySQLOperations
 class User:
     def __init__(self, userName, password, role) -> None:
         self.userName = userName
@@ -15,45 +14,18 @@ class User:
         self.role = role
         self.loggedIn = False
 
-    def login(self, connection) -> bool:
+    def login(self) -> bool:
+        userOperations = UserOperations()
+        result = userOperations.selectUser(self.userName, self.password)
 
-        pdu = ProtocolDataUnit()
-        pdu.PDU['requestType'] = 'login'
-        pdu.PDU['payload'] = (self.userName, self.password, self.role)
-
-
-        connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
-
-        self.loggedIn = True
-        
-
-        
-        # result = MySQLOperations().selectUser(self.userName, self.password)
-        # print(result)
-        
-        # if(len(result) == 1 and result[0][0] == self.userName and result[0][1] == self.password and result[0][2] == self.role):
-        #     print('User Authenticated.')
-        #     self.loggedIn = True
-        #     MySQLOperations().updateLoginStatus((self.userName, True))
-        # else:
-        #     print('Incorrect Credentials.')
-        
-        # return self.loggedIn
-
-    def logout(self, connection):
-        pdu = ProtocolDataUnit()
-        pdu.PDU['requestType'] = 'logout'
-        pdu.PDU['payload'] = (self.userName, self.password, self.role)
-
-        connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
-        # if connection.recv(1024000).decode("UTF-8") == 'True':
-        #     self.loggedIn = True
-        # print(connection.recv(1024000).decode("UTF-8"))
-    
-    def isUserLoggedIn(self):
-        result = MySQLOperations().selectUserFromLoginStatus((self.userName, ))
-        if result[0][1] == True:
+        if result[0][0] == self.userName and result[0][1] == self.password and result[0][2] == self.role:
+            self.loggedIn = True
             return True
+        
+
+    
+    
+
 
     
 
