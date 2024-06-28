@@ -55,19 +55,24 @@ if __name__ == "__main__":
 
 
     
-    payload = {"itemID": "#100", 
-               "itemName": "Kachori",
-               "price": 100,
-               "availability": 1}
+    # payload = {"itemID": "#100", 
+    #            "itemName": "Kachori",
+    #            "price": 100,
+    #            "availability": 1}
+    
+
+    # payload = {"itemID": "#10"}
+
+    payload = {"itemID": "#3", "price": 2000} 
     
     payload = json.dumps(payload)
-    print(payload)
+    # print(payload)
 
     pdu = ProtocolDataUnit()
     pdu.PDU["userName"] = "Mukesh"
     pdu.PDU["userPassword"] = "123"
     pdu.PDU["userRole"] = "Admin"
-    pdu.PDU["requestedFor"] = "insertFoodItem"
+    pdu.PDU["requestedFor"] = "updatePrice"
     pdu.PDU["payload"] = payload
 
     soc.sendall(f"{pdu.PDU}".encode("UTF-8"))

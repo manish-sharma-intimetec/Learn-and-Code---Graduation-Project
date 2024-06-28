@@ -65,9 +65,38 @@ class Server:
             adminOperations = AdminOperations()
             adminOperations.insertFoodItem((itemID, itemName, price, availability))
             connection.send(f"Item inserted successfully.".encode("UTF-8"))
-            
-            
 
+        if(receivedDataDict["requestedFor"] == "removeFoodItem"):
+            payload = receivedDataDict["payload"]
+            payloadDict = self.convertReceivedDataIntoDictionary(payload)
+            itemID = payloadDict["itemID"]
+
+            adminOperations = AdminOperations()
+            adminOperations.removeFoodItem(itemID)
+            connection.send(f"Item for itemID = {itemID} is removed successfully.".encode("UTF-8"))
+
+        if(receivedDataDict["requestedFor"] == "updatePrice"):
+            payload = receivedDataDict["payload"]
+            payloadDict = self.convertReceivedDataIntoDictionary(payload)
+            itemID = payloadDict["itemID"]
+            price = payloadDict["price"]
+
+            adminOperations = AdminOperations()
+            adminOperations.updatePrice(itemID, price)
+            connection.send(f"Price is updated for {itemID} successfully.".encode("UTF-8"))
+
+        
+        if(receivedDataDict["requestedFor"] == "updateAvailability"):
+            payload = receivedDataDict["payload"]
+            payloadDict = self.convertReceivedDataIntoDictionary(payload)
+            itemID = payloadDict["itemID"]
+            price = payloadDict["availability"]
+
+            adminOperations = AdminOperations()
+            adminOperations.updateAvailability(itemID, availability)
+            connection.send(f"Availability is updated for {itemID} successfully.".encode("UTF-8"))    
+
+        # chef features
 
 
     def listenClient(self, connection) -> str:   
