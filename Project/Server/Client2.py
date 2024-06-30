@@ -43,8 +43,8 @@ if __name__ == "__main__":
 
 
     pdu = ProtocolDataUnit()
-    pdu.PDU["userName"] = "Mohit"
-    pdu.PDU["userPassword"] = "123"
+    pdu.PDU["userName"] = "Gaurav"
+    pdu.PDU["userPassword"] = "234"
     pdu.PDU["userRole"] = "Employee"
     pdu.PDU["requestedFor"] = "login"
 
@@ -69,8 +69,8 @@ if __name__ == "__main__":
     # print(payload)
 
     pdu = ProtocolDataUnit()
-    pdu.PDU["userName"] = "Mohit"
-    pdu.PDU["userPassword"] = "123"
+    pdu.PDU["userName"] = "Gaurav"
+    pdu.PDU["userPassword"] = "234"
     pdu.PDU["userRole"] = "Employee"
     pdu.PDU["requestedFor"] = "broadcastMenu"
     pdu.PDU["payload"] = payload

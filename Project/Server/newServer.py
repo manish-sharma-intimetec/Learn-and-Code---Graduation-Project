@@ -7,6 +7,7 @@ import ast
 from ProtocolDataUnit import ProtocolDataUnit
 from Login.User import User
 from DatabaseOperations.AdminOperations import AdminOperations
+from Login.ChefHandler import ChefHandler
 
 
 
@@ -96,7 +97,11 @@ class Server:
             adminOperations.updateAvailability(itemID, availability)
             connection.send(f"Availability is updated for {itemID} successfully.".encode("UTF-8"))    
 
+
         # chef features
+        if receivedDataDict["requestedFor"] == "broadcastMenu":
+            chefHandler = ChefHandler(self.listOfUsersLoggedIn)
+            chefHandler.broadcastMenu("recommendedMenu")
 
 
     def listenClient(self, connection) -> str:   
