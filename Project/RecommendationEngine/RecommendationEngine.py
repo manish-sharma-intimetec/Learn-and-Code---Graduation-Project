@@ -1,4 +1,7 @@
-from RecommendationEngineDatabaseOperations import RecommendationEngineDatabaseOperations
+import sys
+sys.path.append("..")
+
+from RecommendationEngine.RecommendationEngineDatabaseOperations import RecommendationEngineDatabaseOperations
 
 class RecommendationEngine:
     
