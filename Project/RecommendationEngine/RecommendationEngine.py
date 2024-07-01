@@ -4,6 +4,9 @@ sys.path.append("..")
 from RecommendationEngine.RecommendationEngineDatabaseOperations import RecommendationEngineDatabaseOperations
 
 class RecommendationEngine:
+
+    def __init__(self) -> None:
+        pass
     
     def getAvgRating(self, itemID):
         result = RecommendationEngineDatabaseOperations().getAvgRatingForAFoodItem((itemID, ))
@@ -32,8 +35,7 @@ class RecommendationEngine:
 
     def getTopItems(self, numberOfItems):
         result = RecommendationEngineDatabaseOperations().getTopItems(numberOfItems)
-
-        print(result)
+        return result
         
 
 if __name__ == "__main__":

@@ -9,9 +9,10 @@ class ChefHandler:
         self.listOfUsersLoggedIn = listOfUsersLoggedIn
 
 
-    def getRecommendedMenu():
+    def getRecommendedMenu(self):
         try:
-            recommendedItems = RecommendationEngine.getTopItems(2)
+            recommendedItems = RecommendationEngine().getTopItems(2)
+            # print("5")
         except Exception:
             print("Error in Recommendation Engine.")
         
@@ -24,7 +25,7 @@ class ChefHandler:
         try:
             finalMenu = self.getRecommendedMenu()  
         except Exception:
-            print("Something went wrong in recommendation engine")
+            print("Something went wrong in recommendation engine.")
         print(finalMenu)
 
         for key in self.listOfUsersLoggedIn:
