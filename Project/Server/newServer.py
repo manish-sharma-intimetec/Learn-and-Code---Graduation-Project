@@ -37,9 +37,10 @@ class Server:
                 #adding the user with key value pair if he/she successfully loggedIn
                 self.listOfUsersLoggedIn[connection] = user
                 print("User login successfully.")
-                connection.sendall("You login successfully.".encode("UTF-8"))
+                connection.sendall("True".encode("UTF-8"))
             else:
                 print("Incorrect credentials.")
+                connection.sendall("False".encode("UTF-8"))
 
         if(receivedDataDict["requestedFor"] == "logout"):
             self.listOfUsersLoggedIn.pop(connection)
@@ -101,7 +102,11 @@ class Server:
         # chef features
         if receivedDataDict["requestedFor"] == "broadcastMenu":
             chefHandler = ChefHandler(self.listOfUsersLoggedIn)
-            chefHandler.broadcastMenu("recommendedMenu")
+            chefHandler.broadcastMenu(2)
+
+        if receivedDataDict["requestedFor"] == "showVotingResult":
+            chefHandler = ChefHandler(self.listOfUsersLoggedIn)
+            chefHandler.showVotingResult()
 
 
     def listenClient(self, connection) -> str:   

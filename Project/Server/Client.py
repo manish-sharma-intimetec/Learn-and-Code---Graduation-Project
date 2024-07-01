@@ -8,27 +8,45 @@ import sys
 # from Login.Chef import Chef
 
 
-
-
-def getUserType():
-    userType = int(input("Enter 1 for Admin, 2 for Chef, and 3 for Employee: "))
-    return userType
-
 def askForUserCredentials():
     userName = input("Enter your userName: ")
     password = input("Enter your password: ")
-    return (userName, password)
+    role = input("Enter your role: ")
+    return (userName, password, role)
 
-def createUserObject(userType, credentials):
-    user = None
-    if userType == 1:
-        user = Admin(credentials[0], credentials[1], 'Admin')
-    elif userType == 2:
-        user = Chef(credentials[0], credentials[1], 'Chef')
-    elif userType == 3:
-        pass
 
-    return user
+def callLoginService(userName, password, role):
+    pdu = ProtocolDataUnit()
+    pdu.PDU["userName"] = userName
+    pdu.PDU["userPassword"] = password
+    pdu.PDU["userRole"] = role
+    pdu.PDU["requestedFor"] = "login"
+
+    soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
+    message = soc.recv(1024).decode("UTF-8")
+    if message == "True":
+        return True
+    return False
+
+# def getUserType():
+#     userType = int(input("Enter 1 for Admin, 2 for Chef, and 3 for Employee: "))
+#     return userType
+
+# def askForUserCredentials():
+#     userName = input("Enter your userName: ")
+#     password = input("Enter your password: ")
+#     return (userName, password)
+
+# def createUserObject(userType, credentials):
+#     user = None
+#     if userType == 1:
+#         user = Admin(credentials[0], credentials[1], 'Admin')
+#     elif userType == 2:
+#         user = Chef(credentials[0], credentials[1], 'Chef')
+#     elif userType == 3:
+#         pass
+
+#     return user
 
 # def logoutUser(user):
 #     user.logout()
@@ -42,15 +60,15 @@ if __name__ == "__main__":
 
 
 
-    pdu = ProtocolDataUnit()
-    pdu.PDU["userName"] = "Mohit"
-    pdu.PDU["userPassword"] = "123"
-    pdu.PDU["userRole"] = "Employee"
-    pdu.PDU["requestedFor"] = "login"
+    # pdu = ProtocolDataUnit()
+    # pdu.PDU["userName"] = "Mohit"
+    # pdu.PDU["userPassword"] = "123"
+    # pdu.PDU["userRole"] = "Employee"
+    # pdu.PDU["requestedFor"] = "login"
 
-    soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
-    message = soc.recv(1024).decode("UTF-8")
-    print(message)
+    # soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
+    # message = soc.recv(1024).decode("UTF-8")
+    # print(message)
 
 
 
@@ -65,20 +83,20 @@ if __name__ == "__main__":
 
     payload = {"itemID": "#3", "price": 2000} 
     
-    payload = json.dumps(payload)
+    # payload = json.dumps(payload)
     # print(payload)
 
-    pdu = ProtocolDataUnit()
-    pdu.PDU["userName"] = "Mohit"
-    pdu.PDU["userPassword"] = "123"
-    pdu.PDU["userRole"] = "Employee"
-    pdu.PDU["requestedFor"] = "broadcastMenu"
-    pdu.PDU["payload"] = payload
+    # pdu = ProtocolDataUnit()
+    # pdu.PDU["userName"] = "Mohit"
+    # pdu.PDU["userPassword"] = "123"
+    # pdu.PDU["userRole"] = "Employee"
+    # pdu.PDU["requestedFor"] = "broadcastMenu"
+    # pdu.PDU["payload"] = payload
 
-    soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
+    # soc.sendall(f"{pdu.PDU}".encode("UTF-8"))
     
-    message = soc.recv(1024).decode("UTF-8")
-    print(message)
+    # message = soc.recv(1024).decode("UTF-8")
+    # print(message)
 
     # userType = getUserType()
     # credentials = askForUserCredentials()
@@ -140,4 +158,16 @@ if __name__ == "__main__":
 
 
 
-    
+    #..............Client design
+
+username, password, role = askForUserCredentials()
+
+isLoggedIn = callLoginService(username, password, role)
+
+if isLoggedIn == True:
+    if role == "Admin":
+        pass
+    elif role == "Chef":
+        pass
+    elif role == "Employee":
+        pass
