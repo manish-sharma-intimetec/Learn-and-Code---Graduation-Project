@@ -92,7 +92,9 @@ class Server:
             payload = receivedDataDict["payload"]
             payloadDict = self.convertReceivedDataIntoDictionary(payload)
             itemID = payloadDict["itemID"]
-            price = payloadDict["availability"]
+            availability = payloadDict["availability"]
+
+
 
             adminOperations = AdminOperations()
             adminOperations.updateAvailability(itemID, availability)

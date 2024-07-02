@@ -1,9 +1,12 @@
+import sys
+sys.path.append("..")
+
 import socket
 import time
 from ProtocolDataUnit import ProtocolDataUnit
+from Client.AdminMenu import AdminMenu
 import json
-import sys
-# sys.path.append("..")
+
 # from Login.Admin import Admin
 # from Login.Chef import Chef
 
@@ -166,7 +169,9 @@ isLoggedIn = callLoginService(username, password, role)
 
 if isLoggedIn == True:
     if role == "Admin":
-        pass
+        adminMenu = AdminMenu(soc, username, password, role)
+        choice = adminMenu.showOptions()
+        adminMenu.callService(choice)
     elif role == "Chef":
         pass
     elif role == "Employee":
