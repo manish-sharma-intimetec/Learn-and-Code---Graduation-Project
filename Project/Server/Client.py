@@ -5,6 +5,8 @@ import socket
 import time
 from ProtocolDataUnit import ProtocolDataUnit
 from Client.AdminMenu import AdminMenu
+
+from Client.ChefMenu import ChefMenu
 import json
 
 # from Login.Admin import Admin
@@ -173,6 +175,8 @@ if isLoggedIn == True:
         choice = adminMenu.showOptions()
         adminMenu.callService(choice)
     elif role == "Chef":
-        pass
+        chefMenu = ChefMenu(soc, username, password, role)
+        choice = chefMenu.showOptions()
+        chefMenu.callService(choice)
     elif role == "Employee":
         pass

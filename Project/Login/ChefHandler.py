@@ -31,7 +31,7 @@ class ChefHandler:
 
         for key in (self.listOfUsersLoggedIn):
             user = self.listOfUsersLoggedIn[key]
-            if user.role == 'Employee':   
+            if user.role == 'Employee' or user.role == 'Chef':   
                 key.sendall(f"{finalMenu}".encode("UTF-8"))
 
 
