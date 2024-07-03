@@ -33,7 +33,15 @@ class EmployeeMenu:
             self.showMenu()
     
     def todayMeal(self):
-        pass
+        pdu = ProtocolDataUnit()
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "seeTodayMeal"
+
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        message = self.connection.recv(1024).decode("UTF-8")
+        print(message)
 
     def showMenu(self):
         pdu = ProtocolDataUnit()

@@ -38,10 +38,10 @@ class Server:
                 #adding the user with key value pair if he/she successfully loggedIn
                 self.listOfUsersLoggedIn[connection] = user
                 print("User login successfully.")
-                connection.sendall("User login successfully.".encode("UTF-8"))
+                connection.sendall("True".encode("UTF-8"))
             else:
                 print("Incorrect credentials.")
-                connection.sendall("Incorrect credentials.".encode("UTF-8"))
+                connection.sendall("False".encode("UTF-8"))
 
         if(receivedDataDict["requestedFor"] == "logout"):
             self.listOfUsersLoggedIn.pop(connection)
@@ -104,12 +104,18 @@ class Server:
 
         # chef features
         if receivedDataDict["requestedFor"] == "broadcastMenu":
-            chefHandler = ChefHandler(self.listOfUsersLoggedIn)
+            chefHandler = ChefHandler(connection, self.listOfUsersLoggedIn)
             chefHandler.broadcastMenu(2)
 
         if receivedDataDict["requestedFor"] == "showVotingResult":
-            chefHandler = ChefHandler(self.listOfUsersLoggedIn)
+            chefHandler = ChefHandler(connection, self.listOfUsersLoggedIn)
             chefHandler.showVotingResult()
+
+        if receivedDataDict["requestedFor"] == "todayMeal":
+            itemID = receivedDataDict["itemID"]
+            
+            chefHandler = ChefHandler(connection, self.listOfUsersLoggedIn)
+            chefHandler.todayMeal(itemID)
 
         # Employee features
         if receivedDataDict["requestedFor"] == "addVote":
@@ -135,8 +141,8 @@ class Server:
             rating = payloadDict["rating"]
             comment = payloadDict["comment"]
 
-            print(userName)
-            print(comment)
+            # print(userName)
+            # print(comment)
     
 
             try:
@@ -145,7 +151,12 @@ class Server:
                 print("Insertion failed in feedback.")
             
             connection.send(f"Feedback is added for {itemID} successfully.".encode("UTF-8"))
-            
+        
+
+        if receivedDataDict["requestedFor"] == "seeTodayMeal":
+            result = EmployeeOperations().seeTodayMeal()
+            connection.send(f"{result}".encode("UTF-8"))
+
 
     def listenClient(self, connection) -> str:   
         try:

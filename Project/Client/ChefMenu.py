@@ -15,6 +15,8 @@ class ChefMenu:
     def showOptions(self):
         print("Enter 1 to broadcast Recommended Items: ")
         print("Enter 2 for see voting: ")
+        print("Enter 3 for today Menu: ")
+        print("Enter 4 for show menu: ")
 
 
         chefChoice = int(input())
@@ -41,14 +43,43 @@ class ChefMenu:
         self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
         message = self.connection.recv(1024).decode("UTF-8")
         print(message)
+
+    
+    def todayMeal(self):
+        pdu = ProtocolDataUnit()
+
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "showVotingResult"
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        message = self.connection.recv(1024).decode("UTF-8")
+        print(message)
+
+        while True:
+            itemID = input("Enter item id to add or press 0 to submit: ")
+            if itemID == '0':
+                break
+            
+            pdu.PDU["userName"] = self.userName
+            pdu.PDU["userPassword"] = self.password
+            pdu.PDU["userRole"] = self.role
+            pdu.PDU["itemID"] = itemID
+            pdu.PDU["requestedFor"] = "todayMeal"
+        
+
+            self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+            message = self.connection.recv(1024).decode("UTF-8")
+            print(message)
+
     
     def callService(self, choice):
         if choice == 1:
             self.broadcastMenu()
         if choice == 2:
             self.showVotingResult()
-        # if choice == 3:
-        #     self.removeItem()
+        if choice == 3:
+            self.todayMeal()
         # if choice == 4:
         #     self.updatePrice()
         # if choice == 5:

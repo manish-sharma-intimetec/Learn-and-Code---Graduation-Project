@@ -52,9 +52,26 @@ class EmployeeOperations:
         cursor.execute(sql, (maxFeedbackID, itemID, userName, rating, comment))
         connection.commit()
 
+    def seeTodayMeal(self):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+        sql = '''
+        SELECT Menu_Item.*
+        FROM Menu_Item
+        JOIN todayMeal ON Menu_Item.itemID = todayMeal.itemID AND todayMeal.date = CURDATE();
+        '''
+        
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        print(result)
+        return result
+
+
 
 
 if __name__ == "__main__":
     # EmployeeOperations().addVote("Mohit", "#10")
-    EmployeeOperations().addFeedback('#45', 'Manish', 4, "Pretty good")
+    # EmployeeOperations().addFeedback('#45', 'Manish', 4, "Pretty good")
+    EmployeeOperations().todayMeal()
         

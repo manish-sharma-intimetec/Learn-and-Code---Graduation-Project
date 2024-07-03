@@ -6,7 +6,8 @@ from datetime import datetime
 
 
 class ChefHandler:
-    def __init__(self, listOfUsersLoggedIn = None) -> None:
+    def __init__(self, connection, listOfUsersLoggedIn = None) -> None:
+        self.connection = connection
         self.listOfUsersLoggedIn = listOfUsersLoggedIn
 
 
@@ -56,30 +57,33 @@ class ChefHandler:
         cursor.execute(query, (currentDate,))
         result = cursor.fetchall()
         print(result)
+        
+        self.connection.sendall(f"Votes: {result}".encode("UTF-8"))
+        # for key in self.listOfUsersLoggedIn:
+        #     user = self.listOfUsersLoggedIn[key]
 
-        for key in self.listOfUsersLoggedIn:
-            user = self.listOfUsersLoggedIn[key]
-
-            if user.role == "Chef":
-                key.sendall(f"Votes: {result}".encode("UTF-8"))
+        #     if user.role == "Chef":
+        #         key.sendall(f"Votes: {result}".encode("UTF-8"))
 
 
-    def todayMeal(self):
+
+    def todayMeal(self, itemID):
         databaseConnection = DatabaseConnection()
         dbConnection = databaseConnection.makeConnection()
         cursor = dbConnection.cursor()
 
-        self.showVotingResult()
+        # votingResult = self.showVotingResult()
+        # self.connection.send(f"voting Result: {votingResult}".encode("UTF-8"))
 
         query = "INSERT INTO todayMeal VALUES(%s, %s);"
         currentDate = datetime.now().date()
-        while True:
-            itemID = input("Enter item id to add or press 0 to submit: ")
-            if itemID == '0':
-                break
+    
             
-            cursor.execute(query, (itemID, currentDate))
-            dbConnection.commit()
+        cursor.execute(query, (itemID, currentDate))
+        dbConnection.commit()
+
+        print("Meal inserted successfully")
+        self.connection.sendall(f"Meal inserted successfully".encode("UTF-8"))
 
 
 

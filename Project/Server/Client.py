@@ -169,6 +169,7 @@ if __name__ == "__main__":
 username, password, role = askForUserCredentials()
 
 isLoggedIn = callLoginService(username, password, role)
+# print(isLoggedIn)
 
 if isLoggedIn == True:
     if role == "Admin":
