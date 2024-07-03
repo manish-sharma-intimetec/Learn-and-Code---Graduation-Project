@@ -8,6 +8,7 @@ from ProtocolDataUnit import ProtocolDataUnit
 from Login.User import User
 from DatabaseOperations.AdminOperations import AdminOperations
 from Login.ChefHandler import ChefHandler
+from DatabaseOperations.EmployeeOperations import EmployeeOperations
 
 
 
@@ -110,6 +111,41 @@ class Server:
             chefHandler = ChefHandler(self.listOfUsersLoggedIn)
             chefHandler.showVotingResult()
 
+        # Employee features
+        if receivedDataDict["requestedFor"] == "addVote":
+            payload = receivedDataDict["payload"]
+            payloadDict = self.convertReceivedDataIntoDictionary(payload)
+
+            userName = receivedDataDict["userName"]
+            itemID = payloadDict["itemID"]
+
+            try:
+                EmployeeOperations().addVote(userName, itemID)
+            except Exception:
+                print("Error in insertion of vote.")
+
+            connection.send(f"Vote is added for {itemID} successfully.".encode("UTF-8"))
+
+        if receivedDataDict["requestedFor"] == "addFeedback":
+            payload = receivedDataDict["payload"]
+            payloadDict = self.convertReceivedDataIntoDictionary(payload)
+
+            userName = receivedDataDict["userName"]
+            itemID = payloadDict["itemID"]
+            rating = payloadDict["rating"]
+            comment = payloadDict["comment"]
+
+            print(userName)
+            print(comment)
+    
+
+            try:
+                EmployeeOperations().addFeedback(itemID, userName, rating, comment)
+            except Exception:
+                print("Insertion failed in feedback.")
+            
+            connection.send(f"Feedback is added for {itemID} successfully.".encode("UTF-8"))
+            
 
     def listenClient(self, connection) -> str:   
         try:

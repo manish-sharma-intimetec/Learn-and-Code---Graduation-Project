@@ -7,6 +7,7 @@ from ProtocolDataUnit import ProtocolDataUnit
 from Client.AdminMenu import AdminMenu
 
 from Client.ChefMenu import ChefMenu
+from Client.EmployeeMenu import EmployeeMenu
 import json
 
 # from Login.Admin import Admin
@@ -179,4 +180,6 @@ if isLoggedIn == True:
         choice = chefMenu.showOptions()
         chefMenu.callService(choice)
     elif role == "Employee":
-        pass
+        employeeMenu = EmployeeMenu(soc, username, password, role)
+        choice = employeeMenu.showOptions()
+        employeeMenu.callService(choice)
