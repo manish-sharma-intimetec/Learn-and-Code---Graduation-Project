@@ -38,10 +38,10 @@ class Server:
                 #adding the user with key value pair if he/she successfully loggedIn
                 self.listOfUsersLoggedIn[connection] = user
                 print("User login successfully.")
-                connection.sendall("True".encode("UTF-8"))
+                connection.sendall("User login successfully.".encode("UTF-8"))
             else:
                 print("Incorrect credentials.")
-                connection.sendall("False".encode("UTF-8"))
+                connection.sendall("Incorrect credentials.".encode("UTF-8"))
 
         if(receivedDataDict["requestedFor"] == "logout"):
             self.listOfUsersLoggedIn.pop(connection)

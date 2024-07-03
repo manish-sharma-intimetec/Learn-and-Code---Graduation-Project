@@ -10,6 +10,9 @@ class ChefHandler:
         self.listOfUsersLoggedIn = listOfUsersLoggedIn
 
 
+    
+
+
     def getRecommendedMenu(self, count = 2):
         try:
             recommendedItems = RecommendationEngine().getTopItems(count)
@@ -58,4 +61,27 @@ class ChefHandler:
             user = self.listOfUsersLoggedIn[key]
 
             if user.role == "Chef":
-                key.sendall(f"{result}".encode("UTF-8"))
+                key.sendall(f"Votes: {result}".encode("UTF-8"))
+
+
+    def todayMeal(self):
+        databaseConnection = DatabaseConnection()
+        dbConnection = databaseConnection.makeConnection()
+        cursor = dbConnection.cursor()
+
+        self.showVotingResult()
+
+        query = "INSERT INTO todayMeal VALUES(%s, %s);"
+        currentDate = datetime.now().date()
+        while True:
+            itemID = input("Enter item id to add or press 0 to submit: ")
+            if itemID == '0':
+                break
+            
+            cursor.execute(query, (itemID, currentDate))
+            dbConnection.commit()
+
+
+
+if __name__ == "__main__":
+    ChefHandler().todayMeal()
