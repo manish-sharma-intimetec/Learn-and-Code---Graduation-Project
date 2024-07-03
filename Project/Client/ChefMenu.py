@@ -31,12 +31,22 @@ class ChefMenu:
         message = self.connection.recv(1024).decode("UTF-8")
         print(message)
 
+    def showVotingResult(self):
+        pdu = ProtocolDataUnit()
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "showVotingResult"
+
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        message = self.connection.recv(1024).decode("UTF-8")
+        print(message)
     
     def callService(self, choice):
         if choice == 1:
             self.broadcastMenu()
-        # if choice == 2:
-        #     self.addItem()
+        if choice == 2:
+            self.showVotingResult()
         # if choice == 3:
         #     self.removeItem()
         # if choice == 4:
