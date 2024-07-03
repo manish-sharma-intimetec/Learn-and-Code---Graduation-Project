@@ -2,6 +2,7 @@ import sys
 sys.path.append("..")
 from DatabaseOperations.DatabaseConnection import DatabaseConnection
 
+
 class EmployeeOperations:
     def __init__(self) -> None:
         self.databaseConnection = DatabaseConnection()
@@ -66,12 +67,39 @@ class EmployeeOperations:
         result = cursor.fetchall()
         print(result)
         return result
+    
+    def updateIsSeen(self, userName):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
 
+        sql = ''' UPDATE notification
+                    SET isSeen = 1
+                    WHERE userName = %s;
+                '''
+        
+        cursor.execute(sql, (userName, ))
+        connection.commit()
+
+    def seeNotification(self, userName):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+        sql = '''SELECT message FROM notification
+                WHERE userName = %s AND isSeen = 0;
+                '''
+        
+        cursor.execute(sql, (userName, ))
+        result = cursor.fetchall()
+        print(result)
+
+        self.updateIsSeen(userName)
+        return result
 
 
 
 if __name__ == "__main__":
     # EmployeeOperations().addVote("Mohit", "#10")
     # EmployeeOperations().addFeedback('#45', 'Manish', 4, "Pretty good")
-    EmployeeOperations().todayMeal()
+    # EmployeeOperations().seeTodayMeal()
+    EmployeeOperations().seeNotification('Mohit')
         

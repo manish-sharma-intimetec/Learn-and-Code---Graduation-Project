@@ -157,6 +157,11 @@ class Server:
             result = EmployeeOperations().seeTodayMeal()
             connection.send(f"{result}".encode("UTF-8"))
 
+        if receivedDataDict["requestedFor"] == "seeNotification":
+            userName = receivedDataDict['userName']
+            result = EmployeeOperations().seeNotification(userName)
+            connection.send(f"{result}".encode("UTF-8"))
+
 
     def listenClient(self, connection) -> str:   
         try:

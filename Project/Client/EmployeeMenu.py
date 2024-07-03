@@ -18,6 +18,7 @@ class EmployeeMenu:
         print("Enter 2 for adding feedback: ")
         print("Enter 3 for today meal: ")
         print("Enter 4 for menu items: ")
+        print("Enter 5 to see notifications: ")
 
         chefChoice = int(input())
         return chefChoice
@@ -31,7 +32,21 @@ class EmployeeMenu:
             self.todayMeal()
         if choice == 4:
             self.showMenu()
+        if choice == 5:
+            self.seeNotification
     
+
+    def seeNotification(self):
+        pdu = ProtocolDataUnit()
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "seeNotification"
+
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        message = self.connection.recv(1024).decode("UTF-8")
+        print(message)
+
     def todayMeal(self):
         pdu = ProtocolDataUnit()
         pdu.PDU["userName"] = self.userName
