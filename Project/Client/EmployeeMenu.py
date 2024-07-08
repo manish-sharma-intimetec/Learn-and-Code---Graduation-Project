@@ -33,7 +33,7 @@ class EmployeeMenu:
         if choice == 4:
             self.showMenu()
         if choice == 5:
-            self.seeNotification
+            self.seeNotification()
     
 
     def seeNotification(self):

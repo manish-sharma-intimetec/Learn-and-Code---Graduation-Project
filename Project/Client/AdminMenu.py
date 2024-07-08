@@ -10,7 +10,7 @@ class AdminMenu:
 
     def showOptions(self):
         print("Enter 1 to add a item: ")
-        print("Enter 2 to add a item: ")
+        print("Enter 2 to insert a item: ")
         print("Enter 3 to remove a item: ")
         print("Enter 4 to update the price: ")
         print("Enter 5 to update availability: ")

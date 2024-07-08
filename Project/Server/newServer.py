@@ -69,6 +69,8 @@ class Server:
             adminOperations.insertFoodItem((itemID, itemName, price, availability))
             connection.send(f"Item inserted successfully.".encode("UTF-8"))
 
+            adminOperations.createNotification(f"New Item is added to Menu. Item Name: {itemName}, Price: {price}")
+
         if(receivedDataDict["requestedFor"] == "removeFoodItem"):
             payload = receivedDataDict["payload"]
             payloadDict = self.convertReceivedDataIntoDictionary(payload)
@@ -77,6 +79,8 @@ class Server:
             adminOperations = AdminOperations()
             adminOperations.removeFoodItem(itemID)
             connection.send(f"Item for itemID = {itemID} is removed successfully.".encode("UTF-8"))
+
+            adminOperations.createNotification(f"Item is removed to Menu. Item Name: {itemID}")
 
         if(receivedDataDict["requestedFor"] == "updatePrice"):
             payload = receivedDataDict["payload"]
@@ -88,6 +92,7 @@ class Server:
             adminOperations.updatePrice(itemID, price)
             connection.send(f"Price is updated for {itemID} successfully.".encode("UTF-8"))
 
+            adminOperations.createNotification(f"Price is updated for an item. Item Name: {itemName}, Price: {price}")
         
         if(receivedDataDict["requestedFor"] == "updateAvailability"):
             payload = receivedDataDict["payload"]
@@ -95,11 +100,15 @@ class Server:
             itemID = payloadDict["itemID"]
             availability = payloadDict["availability"]
 
+            adminOperations.createNotification(f"Item is availability is updated. Item Name: {itemName}, Availability: {availability}")
+
 
 
             adminOperations = AdminOperations()
             adminOperations.updateAvailability(itemID, availability)
             connection.send(f"Availability is updated for {itemID} successfully.".encode("UTF-8"))    
+
+        
 
 
         # chef features
@@ -116,6 +125,7 @@ class Server:
             
             chefHandler = ChefHandler(connection, self.listOfUsersLoggedIn)
             chefHandler.todayMeal(itemID)
+
 
         # Employee features
         if receivedDataDict["requestedFor"] == "addVote":

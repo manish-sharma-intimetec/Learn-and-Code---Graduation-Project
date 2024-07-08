@@ -1,4 +1,5 @@
 from .DatabaseConnection import DatabaseConnection
+from DatabaseOperations.UserOperations import UserOperations
 
 class AdminOperations:
     def __init__(self) -> None:
@@ -66,3 +67,27 @@ class AdminOperations:
         cursor.close()
         self.databaseConnection.closeConnection()
         return result
+    
+    def createNotification(self, message):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+        # fetching all users from user table
+        userOperations = UserOperations()
+        allUsersList = userOperations.selectAllUsers()
+
+        # print(allUsersList)
+
+        # creating the notification for each employee
+        sql = "INSERT INTO notification (message, userName, isSeen) VALUES (%s, %s, %s)"
+        values = None
+        for user in allUsersList:
+            values = (message, user[0], 0)
+            cursor.execute(sql, values)
+            connection.commit()
+            # print(values)
+            # print("Notification is created.")
+        
+
+        cursor.close()
+        self.databaseConnection.closeConnection()

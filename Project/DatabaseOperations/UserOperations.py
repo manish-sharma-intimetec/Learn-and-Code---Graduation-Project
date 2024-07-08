@@ -64,6 +64,23 @@ class UserOperations:
         cursor.close()
         self.databaseConnection.closeConnection()   
         return result
+    
+
+    def selectAllUsers(self):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+
+        sql = "SELECT * FROM users;"
+        
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        print(result)
+        print("Record fetched successfully from users table.")
+
+        cursor.close()
+        self.databaseConnection.closeConnection()   
+        return result
 
     # Menu_Item Table
     def insertFoodItem(self, values):
