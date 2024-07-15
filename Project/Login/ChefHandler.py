@@ -3,6 +3,7 @@ sys.path.append("..")
 from DatabaseOperations.DatabaseConnection import DatabaseConnection
 from RecommendationEngine.RecommendationEngine import RecommendationEngine
 from datetime import datetime
+from DatabaseOperations.AdminOperations import AdminOperations
 
 
 class ChefHandler:
@@ -37,6 +38,11 @@ class ChefHandler:
             user = self.listOfUsersLoggedIn[key]
             if user.role == 'Employee' or user.role == 'Chef':   
                 key.sendall(f"{finalMenu}".encode("UTF-8"))
+
+    # def selectedMenuItemsOptions(self, data = []):
+        
+
+ 
 
 
     def showVotingResult(self):
@@ -85,7 +91,40 @@ class ChefHandler:
         print("Meal inserted successfully")
         self.connection.sendall(f"Meal inserted successfully".encode("UTF-8"))
 
+    def showDiscardMenu(self):
+        databaseConnection = DatabaseConnection()
+        dbConnection = databaseConnection.makeConnection()
+        cursor = dbConnection.cursor()
+
+        query = """
+            SELECT m.itemID, m.itemName, AVG(f.rating) AS avgRating 
+            FROM feedback f
+            INNER JOIN menu_item m ON f.itemID = m.itemID 
+            GROUP BY m.itemID, m.itemName 
+            ORDER BY avgRating;
+            """
+        cursor.execute(query)
+        result = cursor.fetchall()
+        self.connection.sendall(f"discarded items: {result}".encode("UTF-8"))
+
+    def rollOutQuestionsForDiscardedItems(self):
+        databaseConnection = DatabaseConnection()
+        dbConnection = databaseConnection.makeConnection()
+        cursor = dbConnection.cursor()
+
+        query = "SELECT question FROM question;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        # print(result)
+        self.connection.sendall(f"questions: {result}".encode("UTF-8"))
+
+    def discardItem(self, itemID):
+        print("called..")
+        adminOperations = AdminOperations()
+        adminOperations.removeFoodItem(itemID)
+        self.connection.sendall(f"item removed successfully.".encode("UTF-8"))
+        
 
 
 if __name__ == "__main__":
-    ChefHandler().todayMeal()
+    ChefHandler(None, None).rollOutQuestionsForDiscardedItems()

@@ -1,6 +1,7 @@
 # import sys
 # sys.path.append("..")
 # from Login.ChefHandler import ChefHandler
+import json
 
 from ProtocolDataUnit import ProtocolDataUnit
 
@@ -17,6 +18,7 @@ class ChefMenu:
         print("Enter 2 for see voting: ")
         print("Enter 3 for today Menu: ")
         print("Enter 4 for show menu: ")
+        print("Enter 5 for discard menu list: ")
 
 
         chefChoice = int(input())
@@ -32,6 +34,8 @@ class ChefMenu:
         self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
         message = self.connection.recv(1024).decode("UTF-8")
         print(message)
+
+
 
     def showVotingResult(self):
         pdu = ProtocolDataUnit()
@@ -72,7 +76,58 @@ class ChefMenu:
             message = self.connection.recv(1024).decode("UTF-8")
             print(message)
 
+
+    def discardItem(self, itemID = None):
+        itemID = input("Enter item id to discard: ")
+        payloadDict = {"itemID": itemID}
+        payload = json.dumps(payloadDict)
+
+        pdu = ProtocolDataUnit()
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "discardItem"
+        pdu.PDU["payload"] = payload
+
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        message = self.connection.recv(1024).decode("UTF-8")
+        print(message)
+
+
+    def rollOutQuestionsForDiscardedItems(self):
+        pdu = ProtocolDataUnit()
+
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "rollOutQuestionsForDiscardedItems"
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        message = self.connection.recv(1024).decode("UTF-8")
+        print(message)
+
+    def discardMenuService(self):
+        self.showDiscardMenu()
+
+        choice = int(input("Enter 1 to discard item and 2 for roll out questions: "))
+        if choice == 1:
+            self.discardItem()
+        elif choice == 2:
+            self.rollOutQuestionsForDiscardedItems()
     
+    def showDiscardMenu(self):
+        pdu = ProtocolDataUnit()
+
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "showDiscardMenu"
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        message = self.connection.recv(1024).decode("UTF-8")
+        print(message)
+
+    
+    
+
     def callService(self, choice):
         if choice == 1:
             self.broadcastMenu()
@@ -82,5 +137,5 @@ class ChefMenu:
             self.todayMeal()
         # if choice == 4:
         #     self.updatePrice()
-        # if choice == 5:
-        #     self.updateAvailability()
+        if choice == 5:
+            self.discardMenuService()

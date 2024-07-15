@@ -125,7 +125,22 @@ class Server:
             
             chefHandler = ChefHandler(connection, self.listOfUsersLoggedIn)
             chefHandler.todayMeal(itemID)
+        
+        if receivedDataDict["requestedFor"] == "showDiscardMenu":
+            chefHandler = ChefHandler(connection, self.listOfUsersLoggedIn)
+            chefHandler.showDiscardMenu()
 
+        if receivedDataDict["requestedFor"] == "rollOutQuestionsForDiscardedItems":
+            chefHandler = ChefHandler(connection, self.listOfUsersLoggedIn)
+            chefHandler.rollOutQuestionsForDiscardedItems()
+
+        if receivedDataDict["requestedFor"] == "discardItem":
+            payload = receivedDataDict["payload"]
+            payloadDict = self.convertReceivedDataIntoDictionary(payload)
+            itemID = payloadDict["itemID"]
+
+            chefHandler = ChefHandler(connection, self.listOfUsersLoggedIn)
+            chefHandler.discardItem(itemID)
 
         # Employee features
         if receivedDataDict["requestedFor"] == "addVote":
