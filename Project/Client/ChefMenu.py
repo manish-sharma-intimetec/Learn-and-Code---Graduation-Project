@@ -14,7 +14,7 @@ class ChefMenu:
 
     
     def showOptions(self):
-        print("Enter 1 to broadcast Recommended Items: ")
+        print("Enter 1 to see Recommended Items: ")
         print("Enter 2 for see voting: ")
         print("Enter 3 for today Menu: ")
         print("Enter 4 for show menu: ")

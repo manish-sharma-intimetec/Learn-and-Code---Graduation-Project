@@ -94,6 +94,19 @@ class EmployeeOperations:
 
         self.updateIsSeen(userName)
         return result
+    
+    def updateProfile(self, userName, foodType, spiceLevel, foodPreference, sweetPreference):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+        query = "UPDATE user_profile SET foodType = %s, spiceLevel = %s, foodPreference = %s, sweetPreference = %s WHERE userName = %s;"
+
+        try:
+            cursor.execute(query, (foodType, spiceLevel, foodPreference, sweetPreference, userName))
+            connection.commit()
+        except Exception:
+            raise Exception
+        self.databaseConnection.closeConnection()
 
 
 
@@ -101,5 +114,6 @@ if __name__ == "__main__":
     # EmployeeOperations().addVote("Mohit", "#10")
     # EmployeeOperations().addFeedback('#45', 'Manish', 4, "Pretty good")
     # EmployeeOperations().seeTodayMeal()
-    EmployeeOperations().seeNotification('Mohit')
+    # EmployeeOperations().seeNotification('Mohit')
+    EmployeeOperations().updateProfile('Mohit', 'Veg', 'Medium', 'North Indian', 'No')
         

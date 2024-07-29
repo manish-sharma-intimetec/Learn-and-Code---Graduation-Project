@@ -19,6 +19,7 @@ class EmployeeMenu:
         print("Enter 3 for today meal: ")
         print("Enter 4 for menu items: ")
         print("Enter 5 to see notifications: ")
+        print("Enter 6 to update profile: ")
 
         chefChoice = int(input())
         return chefChoice
@@ -34,6 +35,8 @@ class EmployeeMenu:
             self.showMenu()
         if choice == 5:
             self.seeNotification()
+        if choice == 6:
+            self.updateProfile()
     
 
     def seeNotification(self):
@@ -105,6 +108,32 @@ class EmployeeMenu:
         pdu.PDU["userPassword"] = self.password
         pdu.PDU["userRole"] = self.role
         pdu.PDU["requestedFor"] = "addVote"
+        pdu.PDU["payload"] = payload
+
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        message = self.connection.recv(1024).decode("UTF-8")
+        print(message)
+
+    
+    def updateProfile(self):
+        foodType = input("Enter what do like Veg /Non Veg/ Eggetarian: ")
+        spiceLevel = input("Enter Spice Level - Low / Medium / High: ")
+        foodPreference = input("Enter food preference - North Indian / South Indian: ")
+        sweetPreference = input("Enter sweet preference - Yes / No: ")
+        
+        payloadDict = {
+            "foodType": foodType,
+            "spiceLevel": spiceLevel,
+            "foodPreference": foodPreference,
+            "sweetPreference": sweetPreference
+        }
+        payload = json.dumps(payloadDict)
+        
+        pdu = ProtocolDataUnit()
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "updateProfile"
         pdu.PDU["payload"] = payload
 
         self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))

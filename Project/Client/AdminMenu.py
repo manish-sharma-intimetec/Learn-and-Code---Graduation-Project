@@ -9,7 +9,7 @@ class AdminMenu:
         self.role = role
 
     def showOptions(self):
-        print("Enter 1 to add a item: ")
+        print("Enter 1 to show menu: ")
         print("Enter 2 to insert a item: ")
         print("Enter 3 to remove a item: ")
         print("Enter 4 to update the price: ")
@@ -47,11 +47,21 @@ class AdminMenu:
         itemName = input("Enter item name: ")
         price = int(input("Enter price: "))
         availability = int(input("Enter availability: "))
+        foodType = input("Enter what do like Veg /Non Veg/ Eggetarian: ")
+        spiceLevel = input("Enter Spice Level - Low / Medium / High: ")
+        foodPreference = input("Enter food preference - North Indian / South Indian: ")
+        sweetPreference = input("Enter sweet preference - Yes / No: ")
+
 
         payloadDict = {"itemID": itemID, 
                "itemName": itemName,
                "price": price,
-               "availability": availability}
+               "availability": availability,
+               "foodType": foodType,
+                "spiceLevel": spiceLevel,
+                "foodPreference": foodPreference,
+                "sweetPreference": sweetPreference
+               }
         
         payload = json.dumps(payloadDict)
         

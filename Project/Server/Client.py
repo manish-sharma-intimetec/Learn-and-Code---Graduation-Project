@@ -171,7 +171,7 @@ username, password, role = askForUserCredentials()
 isLoggedIn = callLoginService(username, password, role)
 # print(isLoggedIn)
 
-if isLoggedIn == True:
+while isLoggedIn:
     if role == "Admin":
         adminMenu = AdminMenu(soc, username, password, role)
         choice = adminMenu.showOptions()

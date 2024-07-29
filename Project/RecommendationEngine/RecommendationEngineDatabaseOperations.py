@@ -59,7 +59,7 @@ class RecommendationEngineDatabaseOperations:
         cursor = connection.cursor()
 
         # Fetch average ratings for all items
-        queryRatings = "SELECT itemID, AVG(rating) as avg_rating FROM feedback GROUP BY itemID"
+        queryRatings = "SELECT f.itemID, m.itemName, AVG(f.rating) AS avg_rating FROM feedback f JOIN menu_item m ON f.itemID = m.itemID GROUP BY f.itemID, m.itemName;"
         cursor.execute(queryRatings)
         avgRatings = cursor.fetchall()
 

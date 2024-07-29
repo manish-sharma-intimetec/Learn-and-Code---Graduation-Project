@@ -9,7 +9,7 @@ class AdminOperations:
         connection = self.databaseConnection.makeConnection()
         cursor = connection.cursor()
 
-        sql = "INSERT INTO Menu_Item (itemID, itemName, price, availability) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO Menu_Item VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         cursor.execute(sql, values)
         connection.commit()
         print("Record inserted successfully in Menu_Item table.")

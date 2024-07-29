@@ -12,10 +12,8 @@ class ChefHandler:
         self.listOfUsersLoggedIn = listOfUsersLoggedIn
 
 
-    
 
-
-    def getRecommendedMenu(self, count = 2):
+    def getRecommendedMenu(self, count = 3):
         try:
             recommendedItems = RecommendationEngine().getTopItems(count)
             # print("5")
@@ -24,7 +22,7 @@ class ChefHandler:
         
         return recommendedItems
 
-    def broadcastMenu(self, count = 2):
+    def broadcastMenu(self, count = 3):
 
         print("broadcasting......")
         finalMenu = None

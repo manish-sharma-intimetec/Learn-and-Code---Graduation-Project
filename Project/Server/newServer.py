@@ -64,9 +64,13 @@ class Server:
             itemName = payloadDict["itemName"]
             price = payloadDict["price"]
             availability = payloadDict["availability"]
+            foodPreference = payloadDict["foodPreference"]
+            spiceLevel = payloadDict["spiceLevel"]
+            vegType = payloadDict["foodType"]
+            isSweet = payloadDict["sweetPreference"]
 
             adminOperations = AdminOperations()
-            adminOperations.insertFoodItem((itemID, itemName, price, availability))
+            adminOperations.insertFoodItem((itemID, itemName, price, availability, foodPreference, spiceLevel, vegType, isSweet))
             connection.send(f"Item inserted successfully.".encode("UTF-8"))
 
             adminOperations.createNotification(f"New Item is added to Menu. Item Name: {itemName}, Price: {price}")
@@ -187,6 +191,21 @@ class Server:
             result = EmployeeOperations().seeNotification(userName)
             connection.send(f"{result}".encode("UTF-8"))
 
+        if receivedDataDict["requestedFor"] == "updateProfile":
+            userName = receivedDataDict['userName']
+            payload = receivedDataDict["payload"]
+            payloadDict = self.convertReceivedDataIntoDictionary(payload)
+
+            foodType = payloadDict['foodType']
+            spiceLevel = payloadDict['spiceLevel']
+            foodPreference = payloadDict['foodPreference']
+            sweetPreference = payloadDict['sweetPreference']
+
+            try:
+                EmployeeOperations().updateProfile(userName, foodType, spiceLevel, foodPreference, sweetPreference)
+                connection.send(f"profile updated successfully.".encode("UTF-8"))
+            except Exception:
+                print("Some exception occured.")
 
     def listenClient(self, connection) -> str:   
         try:
