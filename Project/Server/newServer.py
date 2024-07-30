@@ -170,9 +170,10 @@ class Server:
             rating = payloadDict["rating"]
             comment = payloadDict["comment"]
 
-            # print(userName)
-            # print(comment)
-    
+           
+            # just showing items as they should give feedback to today's items 
+            # todayMenu = EmployeeOperations().seeTodayMeal()
+            # connection.send(f"today's menu: {todayMenu}".encode("UTF-8"))
 
             try:
                 EmployeeOperations().addFeedback(itemID, userName, rating, comment)
@@ -183,7 +184,12 @@ class Server:
         
 
         if receivedDataDict["requestedFor"] == "seeTodayMeal":
-            result = EmployeeOperations().seeTodayMeal()
+            # result = EmployeeOperations().seeTodayMeal()
+            userName = receivedDataDict["userName"]
+            employeeOperations = EmployeeOperations()
+            result = employeeOperations.seeTodayMeal()
+
+            result = employeeOperations.sortItemAccordingToProfile(result, userName)
             connection.send(f"{result}".encode("UTF-8"))
 
         if receivedDataDict["requestedFor"] == "seeNotification":

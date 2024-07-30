@@ -1,7 +1,9 @@
 # import sys
 # sys.path.append("..")
 # from Login.ChefHandler import ChefHandler
+import ast
 import json
+from PrintTable import *
 
 from ProtocolDataUnit import ProtocolDataUnit
 
@@ -60,6 +62,10 @@ class EmployeeMenu:
         self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
         message = self.connection.recv(1024).decode("UTF-8")
         print(message)
+        
+        message = ast.literal_eval(message)
+        columnNames = ['ID', 'Item Name', 'Price', 'Availability', 'Cuisine', 'Spice Level', 'Veg Type', 'Is Sweet']
+        printTable(message, columnNames)
 
     def showMenu(self):
         pdu = ProtocolDataUnit()
@@ -73,10 +79,23 @@ class EmployeeMenu:
         print(message)
 
     def addFeedback(self, itemID = None, rating = 0, comment = "no comment"):
+        
+        pdu = ProtocolDataUnit()
+        pdu.PDU["userName"] = self.userName
+        pdu.PDU["userPassword"] = self.password
+        pdu.PDU["userRole"] = self.role
+        pdu.PDU["requestedFor"] = "seeTodayMeal"
+
+        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
+        todayMenu = self.connection.recv(1024).decode("UTF-8")
+        print(todayMenu)
+        
+        
         itemID = input("Enter Item ID: ")
         rating = int(input("Enter rating: "))
         comment = input("Enter comment: ")
-        
+
+
         payloadDict = {
             "itemID": itemID,
             "rating": rating,
@@ -91,9 +110,9 @@ class EmployeeMenu:
         pdu.PDU["requestedFor"] = "addFeedback"
         pdu.PDU["payload"] = payload
 
-        self.connection.sendall(f"{pdu.PDU}".encode("UTF-8"))
         message = self.connection.recv(1024).decode("UTF-8")
         print(message)
+
 
     def addVote(self, itemID = None):
         

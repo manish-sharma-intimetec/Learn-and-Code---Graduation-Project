@@ -13,7 +13,7 @@ class ChefHandler:
 
 
 
-    def getRecommendedMenu(self, count = 3):
+    def getRecommendedMenu(self, count = 5):
         try:
             recommendedItems = RecommendationEngine().getTopItems(count)
             # print("5")
@@ -22,7 +22,7 @@ class ChefHandler:
         
         return recommendedItems
 
-    def broadcastMenu(self, count = 3):
+    def broadcastMenu(self, count = 5):
 
         print("broadcasting......")
         finalMenu = None

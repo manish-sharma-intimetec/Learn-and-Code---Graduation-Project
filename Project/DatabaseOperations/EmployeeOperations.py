@@ -109,11 +109,48 @@ class EmployeeOperations:
         self.databaseConnection.closeConnection()
 
 
+    def getSortKeyForMenuItem(self, item, userProfile):
+        # print(item)
+        _, userFoodType, userSpiceLevel, userFoodPreference, userSweetPreference = userProfile
+        itemID, itemName, price, availability, foodPreference, spiceLevel, vegType, isSweet = item
+        
+
+
+        food_preference_match = 1 if foodPreference == userFoodPreference else 0
+        spice_level_match = 1 if spiceLevel == userSpiceLevel else 0
+        sweet_preference_match = 1 if (userSweetPreference == isSweet) else 0
+        userVegType_match = 1 if (userFoodType == vegType) else 0
+
+        preference_score = ((food_preference_match * 3) + (spice_level_match * 2) + (sweet_preference_match * 1) + (userVegType_match * 5))
+        
+        # print(userProfile)
+        # print(f"{userFoodType}, {vegType}")
+        # preference_score = userVegType_match * 5
+
+        return preference_score
+
+    def sortItemAccordingToProfile(self, menuItems, userName):
+        connection = self.databaseConnection.makeConnection()
+        cursor = connection.cursor()
+
+        query = "SELECT * FROM user_profile WHERE userName = %s"
+        cursor.execute(query, (userName, ))
+        userProfile = cursor.fetchone()
+
+        # sortKey = self.getSortKeyForMenuItem(menuItems, userProfile)
+        sortedMenuItems = sorted(menuItems, key=lambda item: self.getSortKeyForMenuItem(item, userProfile), reverse=True)
+        return sortedMenuItems
+
 
 if __name__ == "__main__":
     # EmployeeOperations().addVote("Mohit", "#10")
     # EmployeeOperations().addFeedback('#45', 'Manish', 4, "Pretty good")
     # EmployeeOperations().seeTodayMeal()
     # EmployeeOperations().seeNotification('Mohit')
-    EmployeeOperations().updateProfile('Mohit', 'Veg', 'Medium', 'North Indian', 'No')
+    # EmployeeOperations().updateProfile('Mohit', 'Veg', 'Medium', 'North Indian', 'No')
+    userName = 'Mohit'
+    menuItems = [('#10', 'lacha paratha', '100', '1', 'North Indian', 'Low', 'Veg', 'No'), ('#99', 'Boiled Egg', '30', '1', 'North Indian', 'Low', 'Eggetarian', 'No')]
+
+    list = EmployeeOperations().sortItemAccordingToProfile(menuItems, userName)
+    print(list)
         
